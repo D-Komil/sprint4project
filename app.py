@@ -9,7 +9,7 @@ import plotly.express as px
 
 df = pd.read_csv('vehicles_us.csv')
 df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
-
+df['days_listed'] = df['days_listed'].fillna(0)
 
 # create a text header above the dataframe
 st.header('Car Sales Advertisements') 
