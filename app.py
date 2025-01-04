@@ -31,9 +31,6 @@ df['days_listed'] = df['days_listed'].fillna(0).astype(int)
 # create a text header above the dataframe
 st.header('Car Sales Advertisements') 
 
-# display the dataframe with streamlit
-st.dataframe(df)
-
 st.header('Car Condition by Milage')
 
 # create a plotly histogram figure
