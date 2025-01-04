@@ -14,17 +14,15 @@ df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 
 df['price'] = df['price'].astype(float)
 
-# Drop rows with missing values in 'model_year'
+# Drop missing or invalid model years
 df = df.dropna(subset=['model_year'])
-
-# Filter for plausible model years (e.g., 1950 to 2025)
 df = df[(df['model_year'] >= 1950) & (df['model_year'] <= 2025)]
 
-# Ensure 'model_year' is numeric (if further conversion is needed)
-df['model_year'] = pd.to_numeric(df['model_year'], errors='coerce')
+# Convert model_year to float for compatibility
+df['model_year'] = df['model_year'].astype(float)
 
-# Reset index to clean up the DataFrame
-df = df.reset_index(drop=True)
+# Force Arrow compatibility
+df = df.convert_dtypes()
 
 # Remove rows with non-positive prices
 df = df[df['price'] > 0]
