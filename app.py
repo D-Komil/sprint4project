@@ -12,11 +12,28 @@ import pyarrow as pa
 df = pd.read_csv('vehicles_us.csv')
 df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 
-for col in df.columns:
-    if df[col].dtype == 'object':
-        df[col] = df[col].astype(str)
-    elif df[col].dtype.name.startswith('int'):
-        df[col] = df[col].astype(float)
+df = df.reset_index(drop=True)
+
+# Remove rows with non-positive prices
+df = df[df['price'] > 0]
+# Ensure 'price' is numeric and convert to float
+df['price'] = pd.to_numeric(df['price'], errors='coerce').fillna(0).astype(float)
+
+# Fill missing values in 'days_listed' and ensure integer type
+df['days_listed'] = df['days_listed'].fillna(0).astype(int)
+
+# Convert 'model_year' to string to handle compatibility issues
+df['model_year'] = df['model_year'].astype(str)
+
+# Remove non-numeric entries in 'model_year' if any
+df = df[df['model_year'].str.isnumeric()]
+
+# Convert 'model_year' back to float for processing
+df['model_year'] = df['model_year'].astype(float)
+
+df = df[df['model_year'] > 0]
+
+df = df.reset_index(drop=True)
 
 # create a text header above the dataframe
 st.header('Car Sales Advertisements') 
