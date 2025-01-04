@@ -25,14 +25,8 @@ df['model_year'] = df['model_year'].astype(float)
 # Force Arrow compatibility
 df = df.convert_dtypes()
 
-# Remove rows with non-positive prices
-df = df[df['price'] > 0]
-
 # Fill missing values in 'days_listed' and ensure integer type
 df['days_listed'] = df['days_listed'].fillna(0).astype(int)
-
-# Fill missing 'model_year' with 0 and convert to integer
-df['model_year'] = df['model_year'].fillna(0).astype(int)
 
 # create a text header above the dataframe
 st.header('Car Sales Advertisements') 
