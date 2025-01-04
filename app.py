@@ -7,29 +7,21 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
+import pyarrow as pa
 
 df = pd.read_csv('vehicles_us.csv')
 df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 
-# Cleaning and validating the dataset
-
-df['price'] = df['price'].astype(float)
-
-# Drop missing or invalid model years
-df = df.dropna(subset=['model_year'])
-df = df[(df['model_year'] >= 1950) & (df['model_year'] <= 2025)]
-
-# Convert model_year to float for compatibility
-df['model_year'] = df['model_year'].astype(float)
-
-# Force Arrow compatibility
-df = df.convert_dtypes()
-
-# Fill missing values in 'days_listed' and ensure integer type
-df['days_listed'] = df['days_listed'].fillna(0).astype(int)
+for col in df.columns:
+    if df[col].dtype == 'object':
+        df[col] = df[col].astype(str)
+    elif df[col].dtype.name.startswith('int'):
+        df[col] = df[col].astype(float)
 
 # create a text header above the dataframe
 st.header('Car Sales Advertisements') 
+
+st.dataframe(df)
 
 st.header('Car Condition by Milage')
 
