@@ -13,6 +13,7 @@ df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 # Cleaning and validating the dataset
 
 df['price'] = df['price'].astype(float)
+df['model_year'] = df['model_year'].astype(float)
 
 # Remove rows with non-positive prices
 df = df[df['price'] > 0]
