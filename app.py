@@ -9,6 +9,7 @@ import plotly.express as px
 
 df = pd.read_csv('vehicles_us.csv')
 df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
+df['price'] = pd.to_numeric(df['price'], errors='coerce').fillna(0).astype(int)
 df['days_listed'] = df['days_listed'].fillna(0)
 
 # create a text header above the dataframe
