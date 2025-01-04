@@ -14,13 +14,19 @@ df['manufacturer'] = df['model'].apply(lambda x: x.split()[0])
 
 df['price'] = df['price'].astype(float)
 
-# Convert 'model_year' to float for compatibility
+# Drop rows where 'model_year' is null
+df = df.dropna(subset=['model_year'])
+
+# Convert 'model_year' to numeric
+df['model_year'] = pd.to_numeric(df['model_year'], errors='coerce')
+
+# Drop rows with NaN in 'model_year' after conversion
+df = df.dropna(subset=['model_year'])
+
+# Convert to float for compatibility
 df['model_year'] = df['model_year'].astype(float)
 
-# Remove invalid model years
-df = df[df['model_year'] > 0]
-
-# Reset index to clean up the DataFrame
+# Reset index
 df = df.reset_index(drop=True)
 
 # Remove rows with non-positive prices
